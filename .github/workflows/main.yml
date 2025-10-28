@@ -36,7 +36,7 @@ jobs:
           # Authenticate Docker to ECR
           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 043088170491.dkr.ecr.us-east-1.amazonaws.com
           # Build Docker image
-          docker build -t sonar/swiggy .
+          docker build -t sonar/swiggy -f deployment-using-github-actions/Dockerfile deployment-using-github-actions/
            
           # Tag the image for ECR
           docker tag sonar/swiggy:latest 043088170491.dkr.ecr.us-east-1.amazonaws.com/sonar/swiggy:latest

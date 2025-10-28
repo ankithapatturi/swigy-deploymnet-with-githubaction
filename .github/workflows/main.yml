@@ -55,3 +55,7 @@ jobs:
         run: trivy image 043088170491.dkr.ecr.us-east-1.amazonaws.com/sonar/swiggy:latest > trivyimagedeploy.txt
       - name: Deploy to container
         run: docker run -d --name swiggy-clone -p 3000:3000 043088170491.dkr.ecr.us-east-1.amazonaws.com/sonar/swiggy:latest     
+      - name: Update kubeconfig
+        run: aws eks --region us-east-1 update-kubeconfig --name EKS_CLOUD
+      - name: Deploy to kubernetes
+        run: kubectl apply -f deployment-using-github-actions/deployment-service.yml

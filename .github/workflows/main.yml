@@ -23,3 +23,25 @@ jobs:
             -Dsonar.projectKey=swiggy
             -Dsonar.projectName=swiggy
             -Dsonar.sources=.
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: us-east-1
+            
+      - name: Docker build and push to ECR
+        run: |
+          # Authenticate Docker to ECR
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 043088170491.dkr.ecr.us-east-1.amazonaws.com
+          # Build Docker image
+          docker build -t sonar/swiggy .
+           
+          # Tag the image for ECR
+          docker tag sonar/swiggy:latest 043088170491.dkr.ecr.us-east-1.amazonaws.com/sonar/swiggy:latest
+           
+          # Push the image to ECR
+          docker push 043088170491.dkr.ecr.us-east-1.amazonaws.com/sonar/swiggy:latest
+          env:
+          DOCKER_CLI_ACI: 1

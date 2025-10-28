@@ -43,5 +43,5 @@ jobs:
            
           # Push the image to ECR
           docker push 043088170491.dkr.ecr.us-east-1.amazonaws.com/sonar/swiggy:latest
-          env:
+        env:
           DOCKER_CLI_ACI: 1
